@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../core/services/deeplink_callback_service.dart';
 import '../../../core/services/deeplink_service.dart';
 import '../../../core/theme/app_colors.dart';
@@ -19,16 +20,25 @@ class PaymentDeeplinkPage extends StatelessWidget {
   final Object? data;
   const PaymentDeeplinkPage({super.key, this.data});
 
-  void _cancel(BuildContext context, DeeplinkPaymentData payload) {
-    // Kirim callback cancelled ke app merchant sebelum kembali ke home.
+  void _cancel(BuildContext context, DeeplinkPaymentData payload) async {
     final cb = payload.callbackUrl;
     if (cb != null && cb.isNotEmpty) {
-      DeeplinkCallbackService.notifyCancelled(
-        callbackUrl: cb,
-        reference: payload.reference,
-      );
+      try {
+        final base = Uri.parse(cb);
+        final merged = {
+          ...base.queryParameters,
+          'status': 'cancelled',
+          if (payload.reference != null) 'reference': payload.reference!,
+        };
+        final uri = base.replace(queryParameters: merged);
+        await launchUrl(uri, mode: LaunchMode.externalNonBrowserApplication);
+      } catch (e) {
+        debugPrint("Gagal meluncurkan callback cancelled: $e");
+        if (context.mounted) context.go('/home');
+      }
+    } else {
+      context.go('/home');
     }
-    context.go('/home');
   }
 
   @override
