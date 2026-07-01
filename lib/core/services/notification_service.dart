@@ -87,4 +87,35 @@ class NotificationService {
       platformChannelSpecifics,
     );
   }
+
+  static Future<void> showTransferNotification({
+    required double amount,
+    required String recipient,
+    required double balance,
+  }) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'transfer_channel',
+      'Transfer Notifications',
+      channelDescription: 'Notifications for successful transfer transactions',
+      importance: Importance.max,
+      priority: Priority.high,
+      showWhen: true,
+    );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: DarwinNotificationDetails(),
+    );
+
+    final formattedAmount = CurrencyFormatter.format(amount);
+    final formattedBalance = CurrencyFormatter.format(balance);
+
+    await _notificationsPlugin.show(
+      2,
+      'Pembayaran Berhasil',
+      'Transaksi pembayaran sebesar $formattedAmount ke $recipient telah berhasil dilakukan. Saldo Anda saat ini $formattedBalance.',
+      platformChannelSpecifics,
+    );
+  }
 }

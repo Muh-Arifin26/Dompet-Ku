@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/services/deeplink_callback_service.dart';
+import '../../../core/services/notification_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../data/datasources/local/secure_storage_datasource.dart';
@@ -171,6 +172,11 @@ class _PinPageState extends State<PinPage> {
                   transactionId: result.transactionId,
                 );
               }
+              NotificationService.showTransferNotification(
+                amount: result.amount,
+                recipient: (widget.flowData['merchantName'] as String?) ?? 'Merchant Store',
+                balance: result.balanceAfter,
+              );
               context.go('/success', extra: {
                 'title': 'Pembayaran berhasil',
                 'subtitle': result.description,
