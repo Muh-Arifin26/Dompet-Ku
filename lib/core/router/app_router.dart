@@ -159,6 +159,8 @@ class AppRouter {
                 lines: (extra['lines'] as List<dynamic>?)
                     ?.map((l) => (l as List<dynamic>).map((e) => e.toString()).toList())
                     .toList() ?? [],
+                callbackUrl: extra['callbackUrl'] as String?,
+                reference: extra['reference'] as String?,
               ));
             },
           ),

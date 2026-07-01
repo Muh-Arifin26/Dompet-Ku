@@ -180,6 +180,8 @@ class _PinPageState extends State<PinPage> {
                   ['Saldo setelah', CurrencyFormatter.format(result.balanceAfter)],
                   ['Ref', 'DKG${result.transactionId}'],
                 ],
+                'callbackUrl': cb,
+                'reference': _callbackReference,
               });
             } else if (state is PaymentTopupSuccess) {
               context.go('/success', extra: {

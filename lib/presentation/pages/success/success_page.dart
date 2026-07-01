@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart'; // ⬅️ Tambah ini
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../blocs/account/account_bloc.dart';
@@ -13,6 +14,8 @@ class SuccessPage extends StatefulWidget {
   final String subtitle;
   final double amount;
   final List<List<String>> lines;
+  final String? callbackUrl; // ⬅️ Tambah ini
+  final String? reference;   // ⬅️ Tambah ini
 
   const SuccessPage({
     super.key,
@@ -20,6 +23,8 @@ class SuccessPage extends StatefulWidget {
     required this.subtitle,
     required this.amount,
     required this.lines,
+    this.callbackUrl,
+    this.reference,
   });
 
   @override
@@ -132,7 +137,25 @@ class _SuccessPageState extends State<SuccessPage> {
                 children: [
                   AppButton(
                     label: 'Selesai',
-                    onPressed: () => context.go('/home'),
+                    onPressed: () async {
+                      if (widget.callbackUrl != null) {
+                        try {
+                          final base = Uri.parse(widget.callbackUrl!);
+                          final merged = {
+                            ...base.queryParameters,
+                            'status': 'success',
+                            if (widget.reference != null) 'reference': widget.reference!,
+                          };
+                          final uri = base.replace(queryParameters: merged);
+                          await launchUrl(uri, mode: LaunchMode.externalNonBrowserApplication);
+                        } catch (e) {
+                          debugPrint("Gagal meluncurkan callback: $e");
+                          if (mounted) context.go('/home');
+                        }
+                      } else {
+                        context.go('/home');
+                      }
+                    },
                   ),
                   const SizedBox(height: 10),
                   AppButton(
