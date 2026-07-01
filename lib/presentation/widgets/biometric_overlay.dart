@@ -101,7 +101,9 @@ class _BiometricOverlayState extends State<BiometricOverlay>
         // Layer Kunci Pengaman
         Positioned.fill(
           child: Container(
-            color: AppColors.ink.withOpacity(0.96), // Warna gelap solid untuk privasi
+            decoration: const BoxDecoration(
+              gradient: AppColors.primaryGradient, // 🔥 Ubah ke gradient sesuai logo/tema
+            ),
             child: Scaffold(
               backgroundColor: Colors.transparent,
               body: SafeArea(
@@ -111,22 +113,22 @@ class _BiometricOverlayState extends State<BiometricOverlay>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Spacer(),
-                      // Icon Gembok / Sidik Jari dengan Efek Glowing
+                      // Icon Gembok / Sidik Jari dengan Efek Glowing Putih
                       Container(
                         width: 90,
                         height: 90,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppColors.primary.withOpacity(0.12),
+                          color: Colors.white.withOpacity(0.15),
                           border: Border.all(
-                            color: AppColors.primary.withOpacity(0.3),
+                            color: Colors.white.withOpacity(0.4),
                             width: 2,
                           ),
                         ),
                         child: const Icon(
                           Icons.fingerprint_rounded,
                           size: 56,
-                          color: AppColors.primary,
+                          color: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 28),
@@ -146,7 +148,7 @@ class _BiometricOverlayState extends State<BiometricOverlay>
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 14,
-                          color: Colors.white60,
+                          color: Colors.white70,
                           height: 1.5,
                         ),
                       ),
@@ -158,7 +160,7 @@ class _BiometricOverlayState extends State<BiometricOverlay>
                         child: ElevatedButton.icon(
                           onPressed: _authenticate,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
+                            backgroundColor: Colors.white, // 🔥 Tombol putih kontras dengan gradient
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
@@ -168,18 +170,18 @@ class _BiometricOverlayState extends State<BiometricOverlay>
                                   width: 20,
                                   height: 20,
                                   child: CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: AppColors.primary,
                                     strokeWidth: 2,
                                   ),
                                 )
-                              : const Icon(Icons.lock_open_rounded, color: Colors.white),
+                              : const Icon(Icons.lock_open_rounded, color: AppColors.primary),
                           label: Text(
                             _isAuthenticating ? 'Menunggu Sidik Jari...' : 'Buka Kunci',
                             style: const TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontWeight: FontWeight.w700,
                               fontSize: 16,
-                              color: Colors.white,
+                              color: AppColors.primary,
                             ),
                           ),
                         ),
