@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/router/app_router.dart';
 import 'core/services/deeplink_service.dart';
+import 'core/services/notification_service.dart'; // ⬅️ Tambah ini
 import 'core/theme/app_theme.dart';
 import 'core/utils/app_bloc_observer.dart';
 import 'injection/injection_container.dart' as di;
@@ -19,6 +20,9 @@ void main() async {
 
   // Initialize Firebase — pastikan google-services.json/GoogleService-Info.plist sudah ada
   await Firebase.initializeApp();
+
+  // Initialize local notifications
+  await NotificationService.init(); // ⬅️ Tambah ini
 
   // Initialize dependency injection
   await di.init();

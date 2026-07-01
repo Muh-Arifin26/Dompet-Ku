@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/payment_result_entity.dart';
 import '../../../domain/usecases/payment/payment_usecases.dart';
+import '../../../core/services/notification_service.dart';
 
 // Events
 abstract class PaymentEvent extends Equatable {
@@ -98,6 +99,12 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     try {
       final result = await _topup(event.amount);
       emit(PaymentTopupSuccess(balance: result.balance, amount: result.amount));
+      
+      // 🔥 Panggil local notification untuk Top Up Berhasil
+      await NotificationService.showTopupNotification(
+        amount: result.amount,
+        balance: result.balance,
+      );
     } on ServerFailure catch (e) {
       emit(PaymentError(e.message));
     } on NetworkFailure catch (e) {
