@@ -61,4 +61,30 @@ class NotificationService {
       platformChannelSpecifics,
     );
   }
+
+  static Future<void> showBiometricStatusNotification(bool enabled) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'security_channel',
+      'Security Notifications',
+      channelDescription: 'Notifications for security setting updates',
+      importance: Importance.max,
+      priority: Priority.high,
+      showWhen: true,
+    );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: DarwinNotificationDetails(),
+    );
+
+    final status = enabled ? 'diaktifkan' : 'dinonaktifkan';
+
+    await _notificationsPlugin.show(
+      1,
+      'Keamanan Akun',
+      'Login biometrik telah $status.',
+      platformChannelSpecifics,
+    );
+  }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/services/biometric_service.dart'; // ⬅️ Tambah ini
+import '../../../core/services/biometric_service.dart';
+import '../../../core/services/notification_service.dart'; // ⬅️ Tambah ini
 import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_avatar.dart';
 import '../../widgets/app_badge.dart';
@@ -317,10 +318,9 @@ class _ToggleState extends State<_Toggle> {
         await BiometricService.setBiometricEnabled(true);
         if (mounted) {
           setState(() => _on = true);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Login biometrik berhasil diaktifkan.')),
-          );
         }
+        // Kirim notifikasi latar belakang
+        await NotificationService.showBiometricStatusNotification(true);
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -333,10 +333,9 @@ class _ToggleState extends State<_Toggle> {
       await BiometricService.setBiometricEnabled(false);
       if (mounted) {
         setState(() => _on = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login biometrik dinonaktifkan.')),
-        );
       }
+      // Kirim notifikasi latar belakang
+      await NotificationService.showBiometricStatusNotification(false);
     }
   }
 
