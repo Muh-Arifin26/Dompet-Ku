@@ -28,6 +28,19 @@ class _HomePageState extends State<HomePage> {
     context.read<AuthBloc>().add(AuthCheckRequested());
   }
 
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour >= 5 && hour < 11) {
+      return 'Selamat pagi,';
+    } else if (hour >= 11 && hour < 15) {
+      return 'Selamat siang,';
+    } else if (hour >= 15 && hour < 18) {
+      return 'Selamat sore,';
+    } else {
+      return 'Selamat malam,';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
@@ -75,8 +88,8 @@ class _HomePageState extends State<HomePage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Selamat siang,',
-                                      style: TextStyle(
+                                  Text(_getGreeting(),
+                                      style: const TextStyle(
                                         fontFamily: 'PlusJakartaSans',
                                         fontSize: 13,
                                         color: Colors.white70,
