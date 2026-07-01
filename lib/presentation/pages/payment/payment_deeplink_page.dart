@@ -18,7 +18,8 @@ import '../../widgets/feature_icon.dart';
 ///  - `null`                → halaman dibuka tanpa data deeplink (link rusak)
 class PaymentDeeplinkPage extends StatelessWidget {
   final Object? data;
-  const PaymentDeeplinkPage({super.key, this.data});
+  final String? callbackUrl; // ⬅️ Tambah ini
+  const PaymentDeeplinkPage({super.key, this.data, this.callbackUrl});
 
   void _cancel(BuildContext context, DeeplinkPaymentData payload) async {
     final cb = payload.callbackUrl;
@@ -49,7 +50,7 @@ class PaymentDeeplinkPage extends StatelessWidget {
       final message = payload is String
           ? payload
           : 'Link pembayaran tidak ditemukan atau tidak valid.';
-      return _ErrorView(message: message);
+      return _ErrorView(message: message, callbackUrl: callbackUrl);
     }
 
     return PopScope(
@@ -290,10 +291,12 @@ class _DetailRow extends StatelessWidget {
 
 class _ErrorView extends StatelessWidget {
   final String message;
-  const _ErrorView({required this.message});
+  final String? callbackUrl;
+  const _ErrorView({required this.message, this.callbackUrl});
 
   @override
   Widget build(BuildContext context) {
+    final hasCallback = callbackUrl != null && callbackUrl!.isNotEmpty;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -327,9 +330,26 @@ class _ErrorView extends StatelessWidget {
                   style: const TextStyle(fontSize: 13.5, color: AppColors.slate500, height: 1.5)),
               const SizedBox(height: 28),
               AppButton(
-                label: 'Kembali ke Beranda',
+                label: hasCallback ? 'Kembali ke Permata Store' : 'Kembali ke Beranda',
                 fullWidth: false,
-                onPressed: () => context.go('/home'),
+                onPressed: () async {
+                  if (hasCallback) {
+                    try {
+                      final base = Uri.parse(callbackUrl!);
+                      final merged = {
+                        ...base.queryParameters,
+                        'status': 'cancelled',
+                      };
+                      final uri = base.replace(queryParameters: merged);
+                      await launchUrl(uri, mode: LaunchMode.externalNonBrowserApplication);
+                    } catch (e) {
+                      debugPrint("Gagal meluncurkan callback error: $e");
+                      if (context.mounted) context.go('/home');
+                    }
+                  } else {
+                    context.go('/home');
+                  }
+                },
               ),
             ],
           ),

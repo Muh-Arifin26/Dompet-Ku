@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../services/deeplink_service.dart';
 import '../../injection/injection_container.dart';
 import '../../presentation/blocs/account/account_bloc.dart';
 import '../../presentation/blocs/auth/auth_bloc.dart';
@@ -168,7 +169,19 @@ class AppRouter {
           // Pembayaran via deeplink merchant (dompetkampus://pay?... atau https://dompetkampus.app/pay?...)
           GoRoute(
             path: '/pay',
-            builder: (_, state) => _withPayment(PaymentDeeplinkPage(data: state.extra)),
+            builder: (_, state) {
+              final q = state.uri.queryParameters;
+              final cb = q['callback'];
+              if (q.containsKey('merchant_id') && q.containsKey('merchant_name') && q.containsKey('amount')) {
+                try {
+                  final data = DeeplinkPaymentData.fromUri(state.uri);
+                  return _withPayment(PaymentDeeplinkPage(data: data, callbackUrl: cb));
+                } catch (e) {
+                  return _withPayment(PaymentDeeplinkPage(data: e.toString(), callbackUrl: cb));
+                }
+              }
+              return _withPayment(PaymentDeeplinkPage(data: state.extra, callbackUrl: cb));
+            },
           ),
         ],
       );

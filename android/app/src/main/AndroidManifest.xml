@@ -49,5 +49,12 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+        <!-- Izinkan deteksi skema permatastore -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="permatastore" />
+        </intent>
+        <!-- Izinkan interaksi langsung dengan package Permata Store -->
+        <package android:name="com.store.permata" />
     </queries>
 </manifest>

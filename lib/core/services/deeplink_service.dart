@@ -80,20 +80,19 @@ class DeeplinkService {
   final AppLinks _appLinks;
   StreamSubscription<Uri>? _subscription;
 
-  // Payload yang menunggu diproses setelah SplashPage selesai auth check.
-  // Bisa berupa DeeplinkPaymentData (valid) atau String (pesan error).
-  static Object? _pendingPayload;
+  // URI yang menunggu diproses setelah SplashPage selesai auth check.
+  static Uri? _pendingUri;
 
-  /// Ambil dan hapus pending payload (dipanggil dari SplashPage).
+  /// Ambil dan hapus pending URI (dipanggil dari SplashPage).
   /// Mengembalikan null jika tidak ada deeplink yang menunggu.
-  static Object? consumePending() {
-    final payload = _pendingPayload;
-    _pendingPayload = null;
-    debugPrint('[DeeplinkService] consumePending: $payload');
-    return payload;
+  static Uri? consumePending() {
+    final uri = _pendingUri;
+    _pendingUri = null;
+    debugPrint('[DeeplinkService] consumePending: $uri');
+    return uri;
   }
 
-  static bool get hasPending => _pendingPayload != null;
+  static bool get hasPending => _pendingUri != null;
 
   DeeplinkService(this._router) : _appLinks = AppLinks();
 
@@ -123,13 +122,8 @@ class DeeplinkService {
 
   /// Simpan URI cold-start sebagai pending (belum navigasi).
   void _storePending(Uri uri) {
-    try {
-      _pendingPayload = DeeplinkPaymentData.fromUri(uri);
-      debugPrint('[DeeplinkService] Pending tersimpan: $_pendingPayload');
-    } on FormatException catch (e) {
-      _pendingPayload = e.message;
-      debugPrint('[DeeplinkService] Pending error tersimpan: ${e.message}');
-    }
+    _pendingUri = uri;
+    debugPrint('[DeeplinkService] Pending URI tersimpan: $uri');
   }
 
   /// Handle URI in-app: GoRouter sudah mounted, jadwalkan navigasi ke /pay
@@ -141,19 +135,10 @@ class DeeplinkService {
       return;
     }
 
-    try {
-      final data = DeeplinkPaymentData.fromUri(uri);
-      debugPrint('[DeeplinkService] Jadwal navigasi /pay — ${data.merchantName} ${data.amount}');
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        debugPrint('[DeeplinkService] router.go("/pay") dieksekusi');
-        _router.go('/pay', extra: data);
-      });
-    } on FormatException catch (e) {
-      debugPrint('[DeeplinkService] Format error: ${e.message}');
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _router.go('/pay', extra: e.message);
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      debugPrint('[DeeplinkService] router.go("/pay?${uri.query}") dieksekusi');
+      _router.go('/pay?${uri.query}');
+    });
   }
 
   bool _isPaymentLink(Uri uri) {

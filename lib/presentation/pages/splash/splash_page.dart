@@ -28,9 +28,9 @@ class _SplashPageState extends State<SplashPage> {
         if (state is AuthAuthenticated) {
           // Cek apakah ada deeplink payment yang menunggu (cold-start via deeplink).
           // Jika ada, langsung ke halaman konfirmasi. Jika tidak, ke home.
-          final pending = DeeplinkService.consumePending();
-          if (pending != null) {
-            context.go('/pay', extra: pending);
+          final pendingUri = DeeplinkService.consumePending();
+          if (pendingUri != null) {
+            context.go('/pay?${pendingUri.query}');
           } else {
             context.go('/home');
           }
