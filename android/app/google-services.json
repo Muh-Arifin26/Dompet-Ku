@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "809780982207",
+    "project_id": "e-money-7568e",
+    "storage_bucket": "e-money-7568e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809780982207:android:e12cf0fa830c07a457310a",
+        "android_client_info": {
+          "package_name": "com.example.dompet_ku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809780982207-tmt9561v2jq06idcvdn4br42os7rbia8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw0hdUirqPA476PNpV6c2wob1IpsJJ3B0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809780982207-tmt9561v2jq06idcvdn4br42os7rbia8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
