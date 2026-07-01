@@ -24,6 +24,12 @@ class NotificationService {
     await _notificationsPlugin.initialize(
       initializationSettings,
     );
+
+    // 🔥 Minta izin notifikasi khusus untuk Android 13+ (API 33+)
+    await _notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
   }
 
   static Future<void> showTopupNotification({
