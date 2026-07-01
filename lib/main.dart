@@ -9,6 +9,8 @@ import 'core/theme/app_theme.dart';
 import 'core/utils/app_bloc_observer.dart';
 import 'injection/injection_container.dart' as di;
 
+import 'presentation/widgets/biometric_overlay.dart'; // ⬅️ Tambah ini
+
 // Top-level variable — mencegah DeeplinkService di-garbage collect selama
 // proses berjalan sehingga uriLinkStream tetap aktif untuk in-app deeplinks.
 late final DeeplinkService _deeplinkService;
@@ -57,6 +59,9 @@ class DompetKampusApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       routerConfig: AppRouter.router,
+      builder: (context, child) {
+        return BiometricOverlay(child: child!);
+      },
     );
   }
 }

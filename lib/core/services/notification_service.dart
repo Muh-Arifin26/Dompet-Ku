@@ -56,8 +56,8 @@ class NotificationService {
 
     await _notificationsPlugin.show(
       0,
-      'Top Up Berhasil! 🎉',
-      'Selamat! Top Up sebesar $formattedAmount berhasil dilakukan. Saldo Anda sekarang $formattedBalance.',
+      'Top Up Berhasil',
+      'Transaksi Top Up sebesar $formattedAmount telah berhasil dilakukan. Saldo Anda saat ini adalah $formattedBalance.',
       platformChannelSpecifics,
     );
   }
