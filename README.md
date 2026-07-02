@@ -156,3 +156,26 @@ sequenceDiagram
 * **Mata Kuliah:** Pemrograman Mobile Lanjutan
 * **Dosen Pengampu:** I Ketut Gunawan S.Kom, M.T.I
 * **Tujuan Projek:** Ujian Akhir Semester (UAS) Semester 6 di Global Institute Bina Sarana Global.
+
+### Github Repository
+
+* [Dompet Ku](https://github.com/Muh-Arifin26/Dompet-Ku.git) - Klik untuk melihat repositori Dompet Ku
+
+* [Permata Store](https://github.com/Muh-Arifin26/uts_permatastore.git) - Klik untuk melihat repositori Permata Store
+
+* [Backend Dompet Ku](hhttps://github.com/Muh-Arifin26/Be-Dompet-Ku.git) - Klik untuk melihat repositori Backend Dompet Ku
+
+### Presentasi Youtube
+
+* [Link Presentasi Youtube](https://youtu.com/) - Klik untuk melihat presentasi Youtube
+
+
+## Tampilan UI Aplikasi
+
+ *Tampilan 1
+
+<p align="center">
+  <img src="assets/images/1.png" width="200"/>
+  <img src="assets/images/2.png" width="200"/>
+  <img src="assets/images/3.png" width="200"/>
+</p>
